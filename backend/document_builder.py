@@ -7,7 +7,7 @@ def crear_doc(template_file=None):
     if template_file:
         return Document(template_file.file)
     else:
-        return Document("plantillas/estandar.docx")
+        return Document("templates/report-template.docx")
 
 def insertar_datos_generales(doc, data):
     doc.add_heading("Datos Generales", level=1)
@@ -85,3 +85,20 @@ def insertar_notas(doc, data):
     if data.get("notas"):
         doc.add_heading("Notas", level=1)
         doc.add_paragraph(data["notas"])
+
+
+def insertar_patologias(doc, data, images_map):
+    for tipo, info in data.get("patologias", {}).items():
+        if info.get("activo"):
+            doc.add_heading(tipo.capitalize(), level=1)
+            if info.get("pisos"):
+                doc.add_paragraph(f"Pisos afectados: {info['pisos']}")
+            if info.get("descripcion"):
+                doc.add_paragraph(f"Descripción: {info['descripcion']}")
+            if info.get("grado"):
+                doc.add_paragraph(f"Grado de actuación: {info['grado']}")
+            
+            # Insertar imágenes
+            for img_file in images_map.get(tipo, []):
+                run = doc.add_paragraph().add_run()
+                run.add_picture(img_file.file, width=Inches(2))

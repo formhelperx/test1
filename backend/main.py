@@ -62,12 +62,13 @@ async def map_columns(file_path: str = Form(...), sheet_name: str = Form(...), m
 
 
 # 3. ITEForm
+from fastapi import Form, UploadFile, File
+from fastapi.responses import FileResponse, JSONResponse
 
 @app.post("/generate")
 async def generate_word(
     template_id: str = Form(...),
     form_data: str = Form(...),
-    template_file: UploadFile = File(default=None),
     fisuras_images: list[UploadFile] = File(default=[]),
     humedades_images: list[UploadFile] = File(default=[]),
     barandillas_images: list[UploadFile] = File(default=[]),
@@ -76,9 +77,8 @@ async def generate_word(
 ):
     try:
         data = json.loads(form_data)
-
-        # Crear documento desde plantilla personalizada o estándar
-        doc = crear_doc(template_file)
+        # Usar plantilla estándar si no hay template_file
+        doc = crear_doc()
 
         # Construcción modular
         insertar_datos_generales(doc, data)
@@ -92,7 +92,6 @@ async def generate_word(
             "lucernarios": lucernarios_images,
         }
         insertar_patologias(doc, data, images_map)
-
         insertar_presupuesto(doc, data.get("presupuesto", []))
         insertar_conclusiones(doc, data)
         insertar_notas(doc, data)
@@ -105,6 +104,5 @@ async def generate_word(
             filename="Informe.docx",
             media_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         )
-
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)

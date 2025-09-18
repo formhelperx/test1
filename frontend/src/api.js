@@ -56,31 +56,26 @@ export async function mapExcelColumns(filePath, sheetName, mapping) {
   return await res.json();
 }
 
-export async function generateWord(templateId, formData, imagenesPorPatologia = {}) {
+export async function generateWord(templateId, formData) {
   const fd = new FormData();
-
-  // Template ID (texto plano)
   fd.append("template_id", templateId);
-
-  // Datos del formulario como JSON
   fd.append("form_data", JSON.stringify(formData));
 
-  // Añadir imágenes por patología
-  Object.entries(imagenesPorPatologia).forEach(([tipo, files]) => {
-    files.forEach((file) => {
-      // campo se llamará p.ej. fisuras_images
-      fd.append(`${tipo}_images`, file);
+  // Recorrer todas las patologías y enviar los archivos reales
+  Object.entries(formData.patologias).forEach(([tipo, patologia]) => {
+    patologia.imagenes.forEach((file, index) => {
+      // file es un File real si viene de <input type="file">
+      fd.append(`${tipo}_images`, file); 
     });
   });
 
   const res = await fetch(`${BASE_URL}/generate`, {
     method: "POST",
-    body: fd, // <-- importante: no headers Content-Type
+    body: fd,
   });
 
   if (!res.ok) throw new Error("Error generating Word");
 
-  // Aquí, como el backend devuelve un Word (.docx), no se parsea como JSON
   const blob = await res.blob();
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");

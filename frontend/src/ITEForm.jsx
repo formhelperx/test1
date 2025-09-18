@@ -50,18 +50,22 @@ export default function ITEForm() {
 
   // Subida de imágenes
   const handleImageUpload = (tipo, files) => {
-    const imagenesArray = Array.from(files).map((file) => URL.createObjectURL(file));
+    const filesArray = Array.from(files); // archivos reales
+    const previewArray = filesArray.map((file) => URL.createObjectURL(file)); // para previsualización
+
     setFormData({
       ...formData,
       patologias: {
         ...formData.patologias,
         [tipo]: {
           ...formData.patologias[tipo],
-          imagenes: [...formData.patologias[tipo].imagenes, ...imagenesArray],
+          imagenes: [...formData.patologias[tipo].imagenes, ...filesArray], // archivos reales
+          preview: [...(formData.patologias[tipo].preview || []), ...previewArray], // solo para mostrar
         },
       },
     });
   };
+
 
   const addActuacion = () => {
     setFormData({
@@ -96,12 +100,48 @@ export default function ITEForm() {
     e.preventDefault();
 
     try {
-      await generateWord("informe_eustasio", formData, imagenesPorPatologia);
+      const fd = new FormData();
+
+      // 1️⃣ Template ID (puedes usar "informe_eustasio" o lo que tengas)
+      fd.append("template_id", "informe_eustasio");
+
+      // 2️⃣ Datos del formulario como JSON
+      fd.append("form_data", JSON.stringify(formData));
+
+      // 3️⃣ Añadir imágenes reales de cada patología
+      Object.entries(formData.patologias).forEach(([tipo, patologia]) => {
+        // patologia.imagenes debe ser un array de File reales del input
+        if (patologia.imagenes && patologia.imagenes.length > 0) {
+          patologia.imagenes.forEach((file) => {
+            fd.append(`${tipo}_images`, file); // el backend espera este nombre
+          });
+        }
+      });
+
+      // 4️⃣ Llamada al backend
+      const res = await fetch("http://localhost:8000/generate", {
+        method: "POST",
+        body: fd, // importante: no poner headers, FormData lo maneja
+      });
+
+      if (!res.ok) {
+        const errData = await res.json();
+        throw new Error(errData.error || "Error generando Word");
+      }
+
+      // 5️⃣ Descargar Word
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Informe.docx";
+      a.click();
     } catch (err) {
       console.error(err);
-      alert("Error generando informe");
+      alert("Error generando informe: " + err.message);
     }
   };
+
 
 
   return (
