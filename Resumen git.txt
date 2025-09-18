@@ -4,4 +4,7 @@ git commit -m "Descripción de los cambios" (para guardar la nueva versión)
 
 git push (para subirla a GitHub)
 
-prueba commit
+
+Comando				¿Qué hace?						¿Cuándo usarlo?
+git reset --hard HEAD~1		Borra el último commit y sus cambios.			En tu repositorio local, antes de subir a GitHub.
+git revert HEAD			Crea un nuevo commit que deshace el anterior.		En repositorios colaborativos o cuando ya hiciste push.
