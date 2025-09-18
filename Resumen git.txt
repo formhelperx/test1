@@ -1,0 +1,5 @@
+git add . (para añadir los nuevos cambios)
+
+git commit -m "Descripción de los cambios" (para guardar la nueva versión)
+
+git push (para subirla a GitHub)
