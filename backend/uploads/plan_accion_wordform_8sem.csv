@@ -1,0 +1,22 @@
+﻿Tarea,Semana,Estado
+Elegir sector inicial (ej. arquitectos),Semana 1,Pendiente
+Preparar 1 plantilla de informe (ej. memoria técnica),Semana 1,Pendiente
+Crear landing mínima (1 página con demo o mockup),Semana 1,Pendiente
+Lista de 10 clientes potenciales,Semana 1,Pendiente
+Enviar email personalizado a clientes potenciales,Semana 2,Pendiente
+"Ofrecer acceso gratuito (versión manual, envío del Word/PDF)",Semana 2,Pendiente
+Preparar guía breve de uso (1 página),Semana 2,Pendiente
+"Contactar usuarios → preguntas sobre facilidad, mejoras, informes extra",Semana 3,Pendiente
+Ajustar plantilla según feedback,Semana 3,Pendiente
+Guardar testimonios iniciales,Semana 3,Pendiente
+Contactar nuevos clientes usando testimonio,Semana 4,Pendiente
+Registrar interés en pagar,Semana 4,Pendiente
+Proponer precios (pago por documento o mensual),Semana 4,Pendiente
+Definir flujo mínimo del SaaS (subir Excel → generar Word/PDF),Semana 5,Pendiente
+Decidir stack/no-code (Python+FastAPI o Bubble/Retool),Semana 5,Pendiente
+Implementar backend mínimo (generación documento),Semana 6,Pendiente
+Implementar frontend simple (subida de archivo + generar),Semana 6,Pendiente
+Invitar primeros usuarios a probar la beta SaaS,Semana 7,Pendiente
+"Recoger feedback técnico (bugs, usabilidad)",Semana 7,Pendiente
+"Ajustar UX básica (logo cliente, portada sencilla)",Semana 8,Pendiente
+Probar cobro manual (transferencia/Paypal) con 1–2 clientes,Semana 8,Pendiente

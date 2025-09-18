@@ -1,0 +1,43 @@
+// backend/templates/report-template.json
+// Tiene que existir un archivo con el mismo nombre que base_docx
+{
+  "name": "Informe de Arquitectura",
+  
+  "base_docx": "report-template.docx",
+  "structure": [
+    {
+      "title": "Datos del Proyecto",
+      "fields": [
+        {"key": "project_name", "type": "text"},
+        {"key": "doc_version", "type": "text"},
+        {"key": "doc_date", "type": "date"}
+      ]
+    },
+    {
+      "title": "Introducción",
+      "fields": [
+        {"key": "introduction", "type": "richtext"}
+      ]
+    },
+    {
+      "title": "Análisis de Riesgos",
+      "fields": [
+        {
+          "key": "risk_table",
+          "type": "table",
+          "columns": [
+            {"key": "id", "header": "ID", "width": "10%"},
+            {"key": "description", "header": "Descripción", "width": "40%"},
+            {"key": "severity", "header": "Severidad", "width": "20%"},
+            {"key": "mitigation", "header": "Mitigación", "width": "30%"}
+          ]
+        }
+      ]
+    }
+  ],
+  "styles": {
+    "title1": {"font_size": 18, "bold": true},
+    "normal": {"font_size": 12},
+    "table_header": {"bold": true, "alignment": "center"}
+  }
+}
