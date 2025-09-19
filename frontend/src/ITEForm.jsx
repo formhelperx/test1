@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 
 export default function ITEForm() {
+  const hoy = new Date().toISOString().slice(0, 10);
   const [formData, setFormData] = useState({
     direccion: "",
     promotor: "",
     arquitecta: "",
-    fecha: "",
+    
+    nColegiada: "",
+    nOferta: "",
+    fechaOferta: "",
+    plantas: "",
+    viviendas: "",
+     
+    fotoPrincipal: null, // Aquí se guardará el objeto File
+    previewFotoPrincipal: null, // Aquí la URL para la previsualización
+
+
+    emplazamiento: "",
+
 
     motivoInspeccion: "",
     fechaVisita: "",
@@ -35,6 +48,18 @@ export default function ITEForm() {
       ...formData,
       [section]: { ...formData[section], [field]: value },
     });
+  };
+  // Helper para subida de la foto principal
+  const handleMainPhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setFormData({
+        ...formData,
+        fotoPrincipal: file,
+        previewFotoPrincipal: previewUrl,
+      });
+    }
   };
 
   // Helper para actualizar patologías
@@ -149,11 +174,11 @@ export default function ITEForm() {
       onSubmit={handleSubmit}
       className="space-y-6 max-w-4xl mx-auto p-6 border rounded-lg shadow"
     >
-      <h2 className="text-2xl font-bold">Informe Técnico – Eustasio Amilibia</h2>
+      <h1 className="text-2xl font-bold">Informe Técnico – Eustasio Amilibia</h1>
 
       {/* DATOS GENERALES */}
       <div>
-        <h3 className="font-bold">Datos Generales</h3>
+        <h2 className="font-bold">Datos Generales</h2>
         <input
           type="text"
           placeholder="Dirección"
@@ -173,12 +198,80 @@ export default function ITEForm() {
           onChange={(e) => setFormData({ ...formData, arquitecta: e.target.value })}
         />
         <input
+          type="text"
+          placeholder="Nº colegiada"
+          className="border p-2 w-full"
+          onChange={(e) => setFormData({ ...formData, nColegiada: e.target.value })}
+        />
+        
+        <h3 className="block">Datos de la oferta</h3>
+        <input
+          type="text"
+          placeholder="Nº de oferta"
+          className="border p-2 w-full"
+          onChange={(e) => setFormData({ ...formData, nOferta: e.target.value })}
+        />
+        <input
+          type="date"         
+          className="border p-2 w-full"
+          onChange={(e) => setFormData({ ...formData, fechaOferta: e.target.value })}
+        />
+
+        <h2 className="block">Datos del edificio</h2>
+        <label className="block">Fecha de la visita</label>
+        <input
           type="date"
+          defaultValue={hoy}
           className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
         />
-      </div>
+        <label className="block mt-4 mb-2">Foto Principal</label>
+        <input
+          type="file"
+          accept="image/*"
+          className="my-2"
+          onChange={handleMainPhotoUpload}
+        />
+  
+  
+        {formData.previewFotoPrincipal && (
+          <div className="mt-2">
+            <img
+              src={formData.previewFotoPrincipal}
+              alt="Foto principal"
+              className="w-40 h-40 object-cover rounded border"
+            />
+          </div>
+        )}
+          </div>
 
+    
+      <div>
+        
+        <input
+          type="text"
+          placeholder="nº de plantas"
+          className="border p-2 w-full"
+          onChange={(e) => setFormData({ ...formData, plantas: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="nº de viviendas por planta"
+          className="border p-2 w-full"
+          onChange={(e) => setFormData({ ...formData, viviendas: e.target.value })}
+        />
+
+      </div>
+      <h3 className="font-bold">Emplazamiento y Colindantes</h3>
+        <textarea
+          placeholder="Emplazamiento y colindantes"
+          defaultValue='La inspección a realizar se ha llevado a cabo en un edificio residencial ubicado en [dirección]. Se trata de un edificio de planta rectangular con un acceso enclavado entre edificios residenciales medianeros correspondientes a [colindantes]. El edificio se compone de planta sótano, baja, [plantas] plantas de vivienda con [viviendas] viviendas [trasteros...].'
+          className="border p-2 w-full"
+          rows="5"
+          onChange={(e) => setFormData({ ...formData, emplazamiento: e.target.value })}
+        />
+
+  
       {/* ANTECEDENTES */}
       <div>
         <h3 className="font-bold">Antecedentes</h3>
@@ -261,6 +354,7 @@ export default function ITEForm() {
                     />
                   ))}
                 </div>
+                
               </>
             )}
           </div>
