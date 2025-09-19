@@ -9,12 +9,15 @@ from docx import Document
 import tempfile
 from document_builder import (
     crear_doc,
-    insertar_datos_generales,
+    #insertar_datos_generales,
     insertar_antecedentes,
-    insertar_patologias,
+    #insertar_patologias,
+    insertar_memoria_descriptiva,
+    insertar_resultados,
     insertar_presupuesto,
     insertar_conclusiones,
-    insertar_notas
+    insertar_notas,
+    insertar_posibles_actuaciones
 )
 
 app = FastAPI()
@@ -81,7 +84,7 @@ async def generate_word(
         doc = crear_doc()
 
         # Construcción modular
-        insertar_datos_generales(doc, data)
+        insertar_memoria_descriptiva(doc, data)
         insertar_antecedentes(doc, data)
 
         images_map = {
@@ -91,9 +94,10 @@ async def generate_word(
             "gresite": gresite_images,
             "lucernarios": lucernarios_images,
         }
-        insertar_patologias(doc, data, images_map)
-        insertar_presupuesto(doc, data.get("presupuesto", []))
+        insertar_resultados(doc, data, images_map)
         insertar_conclusiones(doc, data)
+        insertar_posibles_actuaciones(doc, data)
+        insertar_presupuesto(doc, data.get("presupuesto", []))
         insertar_notas(doc, data)
 
         out_path = tempfile.NamedTemporaryFile(delete=False, suffix=".docx").name
