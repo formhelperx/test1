@@ -2,14 +2,38 @@ from docx import Document
 from docx.shared import Inches, Pt
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-
-
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 def crear_doc(template_file=None):
     if template_file:
         return Document(template_file.file)
     else:
         return Document("templates/report-template.docx")
+    
+def insertar_portada(doc, data, fotoPrincipal):
+    
+    datos_informe = {
+    '[[DIRECCION]]': data.get('direccion'),
+    '[[FECHA_INFORME]]': '20 de septiembre de 2025'
+    }
+    for p in doc.paragraphs:
+    # Usamos una copia del texto para evitar problemas de iteración
+        texto_original = p.text
+        for marcador, valor in datos_informe.items():
+            if marcador in texto_original:
+                p.text = p.text.replace(marcador, str( valor))
+
+    #  Insertar la foto de portada
+    if fotoPrincipal:
+        for p in doc.paragraphs:
+            if '[[FOTO_PORTADA]]' in p.text:
+                p.clear()  # Borra el marcador de texto
+                # Usa el atributo .file del objeto UploadFile directamente
+                p.add_run().add_picture(fotoPrincipal.file, width=Inches(6)) 
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                # Rompe el bucle si solo hay una foto de portada
+                break 
+    
 
 def insertar_memoria_descriptiva(doc, data):
     """

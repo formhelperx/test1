@@ -133,6 +133,12 @@ export default function ITEForm() {
       // 2️⃣ Datos del formulario como JSON
       fd.append("form_data", JSON.stringify(formData));
 
+      // 2.5️⃣ Añadir foto principal
+      if (formData.fotoPrincipal) {
+        fd.append("foto_portada", formData.fotoPrincipal);
+      }
+      
+
       // 3️⃣ Añadir imágenes reales de cada patología
       Object.entries(formData.patologias).forEach(([tipo, patologia]) => {
         // patologia.imagenes debe ser un array de File reales del input

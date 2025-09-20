@@ -9,6 +9,7 @@ from docx import Document
 import tempfile
 from document_builder import (
     crear_doc,
+    insertar_portada,
     #insertar_datos_generales,
     insertar_antecedentes,
     #insertar_patologias,
@@ -18,6 +19,7 @@ from document_builder import (
     insertar_conclusiones,
     insertar_notas,
     insertar_posibles_actuaciones
+
 )
 
 app = FastAPI()
@@ -72,6 +74,7 @@ from fastapi.responses import FileResponse, JSONResponse
 async def generate_word(
     template_id: str = Form(...),
     form_data: str = Form(...),
+    foto_portada: UploadFile = File(default=None),
     fisuras_images: list[UploadFile] = File(default=[]),
     humedades_images: list[UploadFile] = File(default=[]),
     barandillas_images: list[UploadFile] = File(default=[]),
@@ -84,6 +87,7 @@ async def generate_word(
         doc = crear_doc()
 
         # Construcción modular
+        insertar_portada(doc, data, foto_portada)
         insertar_memoria_descriptiva(doc, data)
         insertar_antecedentes(doc, data)
 
