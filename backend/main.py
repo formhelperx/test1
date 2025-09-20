@@ -75,11 +75,28 @@ async def generate_word(
     template_id: str = Form(...),
     form_data: str = Form(...),
     foto_portada: UploadFile = File(default=None),
-    fisuras_images: list[UploadFile] = File(default=[]),
-    humedades_images: list[UploadFile] = File(default=[]),
-    barandillas_images: list[UploadFile] = File(default=[]),
-    gresite_images: list[UploadFile] = File(default=[]),
-    lucernarios_images: list[UploadFile] = File(default=[]),
+    patologia_0_images: list[UploadFile] = File(default=[]),
+    patologia_1_images: list[UploadFile] = File(default=[]),
+    patologia_2_images: list[UploadFile] = File(default=[]),
+    patologia_3_images: list[UploadFile] = File(default=[]),
+    patologia_4_images: list[UploadFile] = File(default=[]),
+    patologia_5_images: list[UploadFile] = File(default=[]),
+    patologia_6_images: list[UploadFile] = File(default=[]),
+    patologia_7_images: list[UploadFile] = File(default=[]),
+    patologia_8_images: list[UploadFile] = File(default=[]),
+    patologia_9_images: list[UploadFile] = File(default=[]),
+    patologia_10_images: list[UploadFile] = File(default=[]),
+    patologia_11_images: list[UploadFile] = File(default=[]),
+    patologia_12_images: list[UploadFile] = File(default=[]),
+    patologia_13_images: list[UploadFile] = File(default=[]),
+    patologia_14_images: list[UploadFile] = File(default=[]),
+    patologia_15_images: list[UploadFile] = File(default=[]),
+    patologia_16_images: list[UploadFile] = File(default=[]),
+    patologia_17_images: list[UploadFile] = File(default=[]),
+    patologia_18_images: list[UploadFile] = File(default=[]),
+    patologia_19_images: list[UploadFile] = File(default=[]),
+    patologia_20_images: list[UploadFile] = File(default=[]) 
+
 ):
     try:
         data = json.loads(form_data)
@@ -91,13 +108,11 @@ async def generate_word(
         insertar_memoria_descriptiva(doc, data)
         insertar_antecedentes(doc, data)
 
-        images_map = {
-            "fisuras": fisuras_images,
-            "humedades": humedades_images,
-            "barandillas": barandillas_images,
-            "gresite": gresite_images,
-            "lucernarios": lucernarios_images,
-        }
+        images_map = {}
+        for i in range(20):  # máximo 10 patologías soportadas
+            key = f"patologia_{i}_images"
+            if key in locals():  # solo si fue enviado en la request
+                images_map[i] = locals()[key]
         insertar_resultados(doc, data, images_map)
         insertar_conclusiones(doc, data)
         insertar_posibles_actuaciones(doc, data)

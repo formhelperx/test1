@@ -78,35 +78,48 @@ def insertar_antecedentes(doc, data):
 
 def insertar_resultados(doc, data, images_map):
     doc.add_heading("RESULTADOS", level=1)
-    doc.add_heading("6.1 Introducción", level=2)
-    doc.add_paragraph("La inspección comienza con la visita según horarios establecidos, de las distintas viviendas que componen el edificio en cuestión. Se analiza el edificio desde la calle principal y también desde la plaza.")
-    doc.add_paragraph("A continuación, se exponen las tablas con los datos obtenidos de cada una de las zonas analizadas, y comentarios acerca de lo observado en cada uno de los elementos. Se ha analizado por patologías encontradas y repeticiones de las mismas, intentando agrupar las incidencias, según los pisos afectados y vistos.")
-    
+    doc.add_heading("Introducción", level=2)
+    doc.add_paragraph(
+        "La inspección comienza con la visita según horarios establecidos, "
+        "de las distintas viviendas que componen el edificio en cuestión. "
+        "Se analiza el edificio desde la calle principal y también desde la plaza."
+    )
+    doc.add_paragraph(
+        "A continuación, se exponen las tablas con los datos obtenidos de cada una de las zonas analizadas, "
+        "y comentarios acerca de lo observado en cada uno de los elementos. "
+        "Se ha analizado por patologías encontradas y repeticiones de las mismas, "
+        "intentando agrupar las incidencias según los pisos afectados y vistos."
+    )   
     # 6.2 ESTUDIO SANITARIO
-    doc.add_heading("6.2 Estudio Sanitario", level=2)
-    for tipo, info in data.get("patologias", {}).items():
-        if info.get("activo"):
-            doc.add_heading(tipo.capitalize(), level=3)
-            table = doc.add_table(rows=1, cols=2)
-            table.style = "Table Grid"
-            table.autofit = False
-            table.rows[0].cells[0].text = "Patología"
-            table.rows[0].cells[0].text = tipo.capitalize()
-            if info.get("pisos"):
-                row = table.add_row().cells
-                row[0].text = "Pisos afectados"
-                row[1].text = info["pisos"]
-            if info.get("descripcion"):
-                row = table.add_row().cells
-                row[0].text = "Descripción"
-                row[1].text = info["descripcion"]                
-            if info.get("grado"):
-                row = table.add_row().cells
-                row[0].text = "Grado de actuación"
-                row[1].text = info["grado"]
-                            
-            # Insertar imágenes
-            for img_file in images_map.get(tipo, []):
+    for idx, pat in enumerate(data.get("patologias", [])):
+        doc.add_heading(pat.get("tipo", "Patología sin nombre"), level=3)
+
+        table = doc.add_table(rows=1, cols=2)
+        table.style = "Table Grid"
+        table.autofit = False
+
+        row = table.rows[0].cells
+        row[0].text = "Tipo de Patología"
+        row[1].text = pat.get("tipo", "")
+
+        if pat.get("pisos"):
+            row = table.add_row().cells
+            row[0].text = "Pisos afectados"
+            row[1].text = pat["pisos"]
+
+        if pat.get("descripcion"):
+            row = table.add_row().cells
+            row[0].text = "Descripción"
+            row[1].text = pat["descripcion"]
+
+        if pat.get("grado"):
+            row = table.add_row().cells
+            row[0].text = "Grado de actuación"
+            row[1].text = str(pat["grado"])
+
+        # Insertar imágenes si existen
+        if idx in images_map:
+            for img_file in images_map[idx]:
                 run = doc.add_paragraph().add_run()
                 run.add_picture(img_file.file, width=Inches(2))
                 
@@ -114,7 +127,7 @@ def insertar_presupuesto(doc, presupuesto):
     if not presupuesto:
         return
 
-    doc.add_heading("ANEXO IV: VALORACIÓN APROXIMADA", level=1)
+    doc.add_heading("ANEXO: VALORACIÓN APROXIMADA", level=1)
     table = doc.add_table(rows=1, cols=4)
     table.style = "Table Grid"
 

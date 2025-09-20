@@ -25,31 +25,26 @@ export default function ITEForm() {
     fechaVisita: "",
     observacionesPrevias: "",
 
-    patologias: {
-      fisuras: { activo: false, pisos: "", descripcion: "", grado: 0, imagenes: [] },
-      desconches: { activo: false, pisos: "", descripcion: "", grado: 0, imagenes: [] },
-      humedades: { activo: false, pisos: "", descripcion: "", grado: 0, imagenes: [] },
-      barandillas: { activo: false, pisos: "", descripcion: "", grado: 0, imagenes: [] },
-      gresite: { activo: false, pisos: "", descripcion: "", grado: 0, imagenes: [] },
-      lucernarios: { activo: false, descripcion: "", grado: 0, imagenes: [] },
-      balcones: { activo: false, descripcion: "", grado: 0, imagenes: [] },
-      instalaciones: { activo: false, descripcion: "", grado: 0, imagenes: [] },
-      patios: { activo: false, descripcion: "", grado: 0, imagenes: [] },
-    },
+    patologias: [],
 
     conclusiones: "",
     actuaciones: [],
     presupuesto: [{ partida: "", unidades: "", precioUnitario: "", total: "" }],
     notas: "",
   });
+  const tiposPatologias = [
+    "Fisuras",
+    "Desconches",
+    "Humedades",
+    "Barandillas",
+    "Gresite",
+    "Lucernarios",
+    "Balcones",
+    "Instalaciones",
+    "Patios",
+    "Otra",
+  ];
 
-  // Helper para actualizar campos simples
-  const handleChange = (section, field, value) => {
-    setFormData({
-      ...formData,
-      [section]: { ...formData[section], [field]: value },
-    });
-  };
   // Helper para subida de la foto principal
   const handleMainPhotoUpload = (e) => {
     const file = e.target.files[0];
@@ -63,36 +58,6 @@ export default function ITEForm() {
     }
   };
 
-  // Helper para actualizar patologías
-  const handlePatologiaChange = (tipo, field, value) => {
-    setFormData({
-      ...formData,
-      patologias: {
-        ...formData.patologias,
-        [tipo]: { ...formData.patologias[tipo], [field]: value },
-      },
-    });
-  };
-
-  // Subida de imágenes
-  const handleImageUpload = (tipo, files) => {
-    const filesArray = Array.from(files); // archivos reales
-    const previewArray = filesArray.map((file) => URL.createObjectURL(file)); // para previsualización
-
-    setFormData({
-      ...formData,
-      patologias: {
-        ...formData.patologias,
-        [tipo]: {
-          ...formData.patologias[tipo],
-          imagenes: [...formData.patologias[tipo].imagenes, ...filesArray], // archivos reales
-          preview: [...(formData.patologias[tipo].preview || []), ...previewArray], // solo para mostrar
-        },
-      },
-    });
-  };
-
-
   const addActuacion = () => {
     setFormData({
       ...formData,
@@ -104,6 +69,22 @@ export default function ITEForm() {
     const nuevas = [...formData.actuaciones];
     nuevas[index] = value;
     setFormData({ ...formData, actuaciones: nuevas });
+  };
+    const addPatologia = () => {
+    setFormData({
+      ...formData,
+      patologias: [
+        ...formData.patologias,
+        {
+          tipo: "", // el usuario puede escribir "Fisuras", "Humedades", etc.
+          pisos: "",
+          descripcion: "",
+          grado: 0,
+          imagenes: [],
+          preview: [],
+        },
+      ],
+    });
   };
 
   const addPartida = () => {
@@ -121,6 +102,32 @@ export default function ITEForm() {
     nuevas[index][field] = value;
     setFormData({ ...formData, presupuesto: nuevas });
   };
+   // 🔧 Actualizar un campo de una patología
+  const updatePatologia = (index, field, value) => {
+    const nuevas = [...formData.patologias];
+    nuevas[index][field] = value;
+    setFormData({ ...formData, patologias: nuevas });
+  };
+
+  // 🔧 Subir imágenes para una patología concreta
+  const handleImageUpload = (index, files) => {
+    const filesArray = Array.from(files);
+    const previewArray = filesArray.map((file) => URL.createObjectURL(file));
+
+    const nuevas = [...formData.patologias];
+    nuevas[index].imagenes = [...nuevas[index].imagenes, ...filesArray];
+    nuevas[index].preview = [...nuevas[index].preview, ...previewArray];
+
+    setFormData({ ...formData, patologias: nuevas });
+  };
+
+  // 🔧 Eliminar patología
+  const removePatologia = (index) => {
+    const nuevas = [...formData.patologias];
+    nuevas.splice(index, 1);
+    setFormData({ ...formData, patologias: nuevas });
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -141,13 +148,12 @@ export default function ITEForm() {
       
 
       // 3️⃣ Añadir imágenes reales de cada patología
-      Object.entries(formData.patologias).forEach(([tipo, patologia]) => {
-        // patologia.imagenes debe ser un array de File reales del input
-        if (patologia.imagenes && patologia.imagenes.length > 0) {
-          patologia.imagenes.forEach((file) => {
-            fd.append(`${tipo}_images`, file); // el backend espera este nombre
-          });
-        }
+
+          // Subir imágenes de cada patología
+      formData.patologias.forEach((p, i) => {
+        p.imagenes.forEach((file) => {
+          fd.append(`patologia_${i}_images`, file);
+        });
       });
 
       // 4️⃣ Llamada al backend
@@ -306,72 +312,79 @@ export default function ITEForm() {
       </div>
 
       {/* PATOLOGÍAS */}
+      {/* 🔥 PATOLOGÍAS DINÁMICAS */}
       <div>
         <h3 className="font-bold">Patologías Detectadas</h3>
-        {Object.keys(formData.patologias).map((tipo) => (
-          <div key={tipo} className="border p-3 rounded mb-3">
-            <label className="font-semibold capitalize">
-              <input
-                type="checkbox"
-                checked={formData.patologias[tipo].activo}
-                onChange={(e) =>
-                  handlePatologiaChange(tipo, "activo", e.target.checked)
-                }
-              />{" "}
-              {tipo}
-            </label>
 
-            {formData.patologias[tipo].activo && (
-              <>
-                <input
-                  type="text"
-                  placeholder="Pisos afectados"
-                  className="border p-1 w-full my-1"
-                  onChange={(e) =>
-                    handlePatologiaChange(tipo, "pisos", e.target.value)
-                  }
-                />
-                <textarea
-                  placeholder="Descripción"
-                  className="border p-1 w-full my-1"
-                  onChange={(e) =>
-                    handlePatologiaChange(tipo, "descripcion", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  min="1"
-                  max="5"
-                  placeholder="Grado de actuación (1-5)"
-                  className="border p-1 w-full my-1"
-                  onChange={(e) =>
-                    handlePatologiaChange(tipo, "grado", e.target.value)
-                  }
-                />
+        {formData.patologias.map((pat, index) => (
+          <div key={index} className="border p-3 rounded mb-3">
+            <div className="flex justify-between items-center">
+              <select
+                className="border p-1 w-3/4"
+                value={pat.tipo}
+                onChange={(e) => updatePatologia(index, "tipo", e.target.value)}
+              >
+                <option value="">Selecciona tipo...</option>
+                {tiposPatologias.map((tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                className="bg-red-500 text-white px-2 py-1 rounded"
+                onClick={() => removePatologia(index)}
+              >
+                Eliminar
+              </button>
+            </div>
 
-                {/* SUBIDA DE IMÁGENES */}
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  className="my-2"
-                  onChange={(e) => handleImageUpload(tipo, e.target.files)}
-                />
-                <div className="flex gap-2 flex-wrap">
-                  {formData.patologias[tipo].imagenes.map((img, i) => (
-                    <img
-                      key={i}
-                      src={img}
-                      alt={`preview-${i}`}
-                      className="w-20 h-20 object-cover rounded border"
-                    />
-                  ))}
-                </div>
-                
-              </>
-            )}
+            <input
+              type="text"
+              placeholder="Pisos afectados"
+              className="border p-1 w-full my-1"
+              value={pat.pisos}
+              onChange={(e) => updatePatologia(index, "pisos", e.target.value)}
+            />
+            <textarea
+              placeholder="Descripción"
+              className="border p-1 w-full my-1"
+              value={pat.descripcion}
+              onChange={(e) => updatePatologia(index, "descripcion", e.target.value)}
+            />
+            <input
+              type="number"
+              min="1"
+              max="5"
+              placeholder="Grado de actuación (1-5)"
+              className="border p-1 w-full my-1"
+              value={pat.grado}
+              onChange={(e) => updatePatologia(index, "grado", e.target.value)}
+            />
+
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              className="my-2"
+              onChange={(e) => handleImageUpload(index, e.target.files)}
+            />
+            <div className="flex gap-2 flex-wrap">
+              {pat.preview.map((url, i) => (
+                <img key={i} src={url} alt={`preview-${i}`} className="w-20 h-20 object-cover rounded border" />
+              ))}
+            </div>
           </div>
         ))}
+
+        <button
+          type="button"
+          className="bg-gray-300 px-3 py-1 rounded mt-2"
+          onClick={addPatologia}
+        >
+          + Añadir patología
+        </button>
       </div>
 
       {/* CONCLUSIONES */}
