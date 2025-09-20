@@ -3,6 +3,7 @@ import React, { useState } from "react";
 export default function ITEForm() {
   const hoy = new Date().toISOString().slice(0, 10);
   const [formData, setFormData] = useState({
+    titulo: "",
     direccion: "",
     promotor: "",
     arquitecta: "",
@@ -187,7 +188,13 @@ export default function ITEForm() {
         <h2 className="font-bold">Datos Generales</h2>
         <input
           type="text"
-          placeholder="Dirección"
+          placeholder="Título"
+          className="border p-2 w-full"
+          onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Dirección Completa"
           className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
         />

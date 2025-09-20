@@ -3,18 +3,30 @@ from docx.shared import Inches, Pt
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+from datetime import date
 
 def crear_doc(template_file=None):
     if template_file:
         return Document(template_file.file)
     else:
         return Document("templates/report-template.docx")
+def current_date_format(date):
+    months = ("Enero", "Febrero", "Marzo", "Abri", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre")
+    day = date.day
+    month = months[date.month - 1]
+    year = date.year
+    messsage = "{} de {} del {}".format(day, month, year)
+
+    return messsage
     
 def insertar_portada(doc, data, fotoPrincipal):
     
     datos_informe = {
-    '[[DIRECCION]]': data.get('direccion'),
-    '[[FECHA_INFORME]]': '20 de septiembre de 2025'
+        '[[TITULO]]': data.get('titulo'),
+        '[[DIRECCION]]': data.get('direccion'),
+        '[[PROMOTOR]]': data.get('promotor'),
+        '[[ARQUITECTA]]': data.get('arquitecta'),
+        '[[FECHA]]': current_date_format(date.today())
     }
     for p in doc.paragraphs:
     # Usamos una copia del texto para evitar problemas de iteración
@@ -27,11 +39,9 @@ def insertar_portada(doc, data, fotoPrincipal):
     if fotoPrincipal:
         for p in doc.paragraphs:
             if '[[FOTO_PORTADA]]' in p.text:
-                p.clear()  # Borra el marcador de texto
-                # Usa el atributo .file del objeto UploadFile directamente
+                p.clear()  # Borra el marcador de texto                
                 p.add_run().add_picture(fotoPrincipal.file, width=Inches(6)) 
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-                # Rompe el bucle si solo hay una foto de portada
                 break 
     
 
