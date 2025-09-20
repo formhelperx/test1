@@ -45,28 +45,29 @@ def insertar_portada(doc, data, fotoPrincipal):
                 break 
     
 
-def insertar_memoria_descriptiva(doc, data):
+def insertar_memoria_descriptiva(doc, data, fotoEmplazamiento):
     """
     Inserta la sección de Memoria Descriptiva con el Autor, Objeto y Emplazamiento.
     """
     doc.add_heading("MEMORIA DESCRIPTIVA", level=1)
     
     # 1. AUTOR
-    doc.add_heading("1. Autor", level=2)
-    doc.add_paragraph(f"El presente informe ha sido redactado por {data.get('arquitecta','')}, arquitecta y colegiada con el nº 671029 del C.O.A.V.N. (Colegio Oficial de Arquitectos Vasco Navarro). El trabajo ha sido realizado en relación a la oferta aceptada '033/2023', presentada el pasado 2 de marzo del 2021.")
+    doc.add_heading("Autor", level=2)
+    doc.add_paragraph(f"El presente informe ha sido redactado por {data.get('arquitecta','')}, arquitecta y colegiada con el nº {data.get('nColegiada','')} del C.O.A.V.N. (Colegio Oficial de Arquitectos Vasco Navarro). El trabajo ha sido realizado en relación a la oferta aceptada {data.get('nOferta','')}, presentada el pasado 2 de marzo del 2021.")
     
     # 2. OBJETO
-    doc.add_heading("2. Objeto", level=2)
+    doc.add_heading("Objeto", level=2)
     doc.add_paragraph("Tiene la presente memoria como finalidad comunicar a la comunidad de vecinos el estado en el que se encuentra su edificio indicando en el informe, las posibles causas y posible solución. Para ello, se realiza una inspección sanitaria general, no exhaustiva.")
     
     # 3. EMPLAZAMIENTO Y COLINDANTES
-    doc.add_heading("3. Emplazamiento y colindantes", level=2)
-    doc.add_paragraph(f"Dirección: {data.get('direccion','')}")
-    doc.add_paragraph(f"Promotor: {data.get('promotor','')}")
-    doc.add_paragraph(f"Arquitecta: {data.get('arquitecta','')}")
-    doc.add_paragraph(f"Fecha: {data.get('fecha','')}")
+    doc.add_heading("Emplazamiento y colindantes", level=2)
+
     if data.get("emplazamiento"):
         doc.add_paragraph(data["emplazamiento"])
+    
+    if fotoEmplazamiento:
+        run = doc.add_paragraph().add_run()
+        run.add_picture(fotoEmplazamiento.file, width=Inches(2))
 
 def insertar_antecedentes(doc, data):
     if data.get("motivoInspeccion") or data.get("observacionesPrevias"):
@@ -122,6 +123,7 @@ def insertar_resultados(doc, data, images_map):
             for img_file in images_map[idx]:
                 run = doc.add_paragraph().add_run()
                 run.add_picture(img_file.file, width=Inches(2))
+                doc.add_paragraph(pat.get("tipo", ""), style="Caption")
                 
 def insertar_presupuesto(doc, presupuesto):
     if not presupuesto:

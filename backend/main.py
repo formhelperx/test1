@@ -75,6 +75,7 @@ async def generate_word(
     template_id: str = Form(...),
     form_data: str = Form(...),
     foto_portada: UploadFile = File(default=None),
+    foto_emplazamiento: UploadFile = File(default=None),
     patologia_0_images: list[UploadFile] = File(default=[]),
     patologia_1_images: list[UploadFile] = File(default=[]),
     patologia_2_images: list[UploadFile] = File(default=[]),
@@ -100,18 +101,17 @@ async def generate_word(
 ):
     try:
         data = json.loads(form_data)
-        # Usar plantilla estándar si no hay template_file
-        doc = crear_doc()
+        
+        doc = crear_doc()                   # Usar plantilla estándar si no hay template_file
 
-        # Construcción modular
         insertar_portada(doc, data, foto_portada)
-        insertar_memoria_descriptiva(doc, data)
+        insertar_memoria_descriptiva(doc, data, foto_emplazamiento)
         insertar_antecedentes(doc, data)
 
         images_map = {}
-        for i in range(20):  # máximo 10 patologías soportadas
+        for i in range(20):                 # máximo 20 patologías soportadas
             key = f"patologia_{i}_images"
-            if key in locals():  # solo si fue enviado en la request
+            if key in locals():            
                 images_map[i] = locals()[key]
         insertar_resultados(doc, data, images_map)
         insertar_conclusiones(doc, data)

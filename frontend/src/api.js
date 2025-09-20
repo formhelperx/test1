@@ -61,6 +61,13 @@ export async function generateWord(templateId, formData) {
   fd.append("template_id", templateId);
   fd.append("form_data", JSON.stringify(formData));
 
+  if (formData.fotoPrincipal) {
+    fd.append("foto_portada", formData.fotoPrincipal);
+  }
+  if (formData.fotoEmplazamiento) {
+    fd.append("foto_emplazamiento", formData.fotoEmplazamiento);
+  }
+
   // Recorrer todas las patologías y enviar los archivos reales
   Object.entries(formData.patologias).forEach(([tipo, patologia]) => {
     patologia.imagenes.forEach((file, index) => {

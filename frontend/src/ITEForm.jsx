@@ -14,9 +14,11 @@ export default function ITEForm() {
     plantas: "",
     viviendas: "",
      
-    fotoPrincipal: null, // Aquí se guardará el objeto File
-    previewFotoPrincipal: null, // Aquí la URL para la previsualización
-
+    fotoPortada: null, // Aquí se guardará el objeto File
+    previewFotoPortada: null, // Aquí la URL para la previsualización
+    
+    fotoEmplazamiento: null,
+    previewFotoEmplazamiento: null, 
 
     emplazamiento: "",
 
@@ -45,15 +47,26 @@ export default function ITEForm() {
     "Otra",
   ];
 
-  // Helper para subida de la foto principal
+  // Helper para subida de la foto de portada
   const handleMainPhotoUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       setFormData({
         ...formData,
-        fotoPrincipal: file,
-        previewFotoPrincipal: previewUrl,
+        fotoPortada: file,
+        previewFotoPortada: previewUrl,
+      });
+    }
+  };
+  const handleSecondaryPhotoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setFormData({
+        ...formData,
+        fotoEmplazamiento: file,
+        previewFotoEmplazamiento: previewUrl,
       });
     }
   };
@@ -141,11 +154,14 @@ export default function ITEForm() {
       // 2️⃣ Datos del formulario como JSON
       fd.append("form_data", JSON.stringify(formData));
 
-      // 2.5️⃣ Añadir foto principal
-      if (formData.fotoPrincipal) {
-        fd.append("foto_portada", formData.fotoPrincipal);
+      // 2.5️⃣ Añadir foto de portada
+      if (formData.fotoPortada) {
+        fd.append("foto_portada", formData.fotoPortada);
       }
-      
+            // 2.5️⃣ Añadir foto emplazamiento
+      if (formData.fotoEmplazamiento) {
+        fd.append("foto_emplazamiento", formData.fotoEmplazamiento);
+      }
 
       // 3️⃣ Añadir imágenes reales de cada patología
 
@@ -187,7 +203,7 @@ export default function ITEForm() {
       onSubmit={handleSubmit}
       className="space-y-6 max-w-4xl mx-auto p-6 border rounded-lg shadow"
     >
-      <h1 className="text-2xl font-bold">Informe Técnico – Eustasio Amilibia</h1>
+      <h1 className="text-2xl font-bold">Inspección Técnica de Edificios</h1>
 
       {/* DATOS GENERALES */}
       <div>
@@ -244,25 +260,39 @@ export default function ITEForm() {
           className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, fecha: e.target.value })}
         />
-        <label className="block mt-4 mb-2">Foto Principal</label>
+        <label className="block mt-4 mb-2">Foto Portada</label>
         <input
           type="file"
           accept="image/*"
           className="my-2"
           onChange={handleMainPhotoUpload}
         />
-  
-  
-        {formData.previewFotoPrincipal && (
+        {formData.previewFotoPortada && (
           <div className="mt-2">
             <img
-              src={formData.previewFotoPrincipal}
-              alt="Foto principal"
+              src={formData.previewFotoPortada}
+              alt="Foto portada"
               className="w-40 h-40 object-cover rounded border"
             />
           </div>
         )}
+        <label className="block mt-4 mb-2">Plano de emplazamiento</label>
+        <input
+          type="file"
+          accept="image/*"
+          className="my-2"
+          onChange={handleSecondaryPhotoUpload}
+        />
+        {formData.previewFotoEmplazamiento && (
+          <div className="mt-2">
+            <img
+              src={formData.previewFotoEmplazamiento}
+              alt="Foto de emplazamiento"
+              className="w-40 h-40 object-cover rounded border"
+            />
           </div>
+        )}
+      </div>
 
     
       <div>
