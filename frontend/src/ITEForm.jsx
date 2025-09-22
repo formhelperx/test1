@@ -3,16 +3,34 @@ import React, { useState } from "react";
 export default function ITEForm() {
   const hoy = new Date().toISOString().slice(0, 10);
   const [formData, setFormData] = useState({
-    titulo: "",
-    direccion: "",
+
     promotor: "",
     arquitecta: "",
-    
     nColegiada: "",
+
+    titulo: "",
+    direccion: "",
+    numero: "",
+    codigoPostal: "",
+    poblacion: "",
+    anioConstruccion: "",
+    referenciaCatastral: "",
+    usoPrincipal: "",
+
+    nombreComunidad: "",
+    nombrePresidente: "",
+    administrador: "",
+    
     nOferta: "",
     fechaOferta: "",
     plantas: "",
     viviendas: "",
+
+    tipologiaEstructural: "",
+    cerramientos: "",
+    revestimientoExterior: "",
+    cubiertaTipo: "",
+    patiosTipo: "",
      
     fotoPortada: null, // Aquí se guardará el objeto File
     previewFotoPortada: null, // Aquí la URL para la previsualización

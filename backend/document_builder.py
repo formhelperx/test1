@@ -40,7 +40,7 @@ def insertar_portada(doc, data, fotoPrincipal):
         for p in doc.paragraphs:
             if '[[FOTO_PORTADA]]' in p.text:
                 p.clear()  # Borra el marcador de texto                
-                p.add_run().add_picture(fotoPrincipal.file, width=Inches(6)) 
+                p.add_run().add_picture(fotoPrincipal.file, width=Inches(5)) 
                 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
                 break 
     
@@ -66,8 +66,11 @@ def insertar_memoria_descriptiva(doc, data, fotoEmplazamiento):
         doc.add_paragraph(data["emplazamiento"])
     
     if fotoEmplazamiento:
-        run = doc.add_paragraph().add_run()
-        run.add_picture(fotoEmplazamiento.file, width=Inches(2))
+        p = doc.add_paragraph()
+        run = p.add_run()
+        run.add_picture(fotoEmplazamiento.file, width=Inches(4))
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        doc.add_paragraph("Emplazamiento", style="Figura numerada")
 
 def insertar_antecedentes(doc, data):
     if data.get("motivoInspeccion") or data.get("observacionesPrevias"):
@@ -121,9 +124,11 @@ def insertar_resultados(doc, data, images_map):
         # Insertar imágenes si existen
         if idx in images_map:
             for img_file in images_map[idx]:
-                run = doc.add_paragraph().add_run()
-                run.add_picture(img_file.file, width=Inches(2))
-                doc.add_paragraph(pat.get("tipo", ""), style="Caption")
+                p = doc.add_paragraph()
+                run = p.add_run()
+                run.add_picture(img_file.file, width=Inches(3))
+                p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                doc.add_paragraph(pat.get("tipo", ""), style="Figura numerada")
                 
 def insertar_presupuesto(doc, presupuesto):
     if not presupuesto:
