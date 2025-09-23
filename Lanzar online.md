@@ -33,6 +33,7 @@ Click New → Web Service → conecta tu repo y selecciona la rama (ej. main).
 FastAPI (Python)
 
 Build command: (opcional) pip install -r requirements.txt
+      mejor:pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
 
 Start command (muy importante usar $PORT):
 
