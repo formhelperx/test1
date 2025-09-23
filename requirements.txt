@@ -1,6 +1,6 @@
-pip==25.2
-setuptools>=68.0.0
-wheel
+pip>=25.2
+setuptools>=70
+wheel>=0.40
 altgraph==0.17.4
 annotated-types==0.7.0
 anyio==4.4.0
