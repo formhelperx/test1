@@ -1,27 +1,27 @@
 Perfecto — aquí tienes Fase 1 descrita paso a paso, lista para ejecutar. Voy a cubrir deploy del backend en Render (primero) y deploy del frontend en Vercel (después), más configuración necesaria (env, CORS, pruebas, dominios, rollback y errores comunes). Incluyo ejemplos tanto para FastAPI (Python) como para Express (Node) y para frontends con Vite o Create React App (CRA).
 
-Pre-requisitos (antes de tocar la nube)
+## Pre-requisitos (antes de tocar la nube)
 
-Código en un repo (GitHub / GitLab / Bitbucket) — recomendado.
+Código en un repo (GitHub)
 
-npm/node instalado para el frontend; python o node según backend.
+node instalado para el frontend; python o node según backend.
 
 Asegúrate de que localmente:
 
-Frontend compila: npm run build → crea dist/ (Vite) o build/ (CRA).
+  Frontend compila: npm run build → crea dist/ (Vite)
 
-Backend arranca en localhost y usa process.env.PORT / $PORT para el puerto.
+  Backend arranca en localhost y usa process.env.PORT / $PORT para el puerto.
 
 Front usa una variable de entorno para la URL del API (no hardcodeada):
 
-Vite: import.meta.env.VITE_API_URL
+  Vite: import.meta.env.VITE_API_URL
+  js:  fetch(import.meta.env.VITE_API_URL + "/endpoint")
 
-CRA: process.env.REACT_APP_API_URL
 
 CORS configurado para aceptar tu dominio del frontend (ejemplos abajo).
 
-Paso A — Desplegar el backend en Render (detallado)
-1. Crear cuenta y servicio
+### Paso A — Desplegar el backend en Render (detallado)
+## 1. Crear cuenta y servicio
 
 Regístrate en https://render.com
  y entra al dashboard.
@@ -40,15 +40,6 @@ uvicorn main:app --host 0.0.0.0 --port $PORT
 
 
 Si quieres más robustez en producción: usar gunicorn -k uvicorn.workers.UvicornWorker main:app con workers.
-
-Express (Node)
-
-Build: si tienes compilación, npm install o npm ci && npm run build
-
-Start command (asegúrate que tu app use process.env.PORT):
-
-npm start
-
 
 en package.json:
 
@@ -97,16 +88,6 @@ app.add_middleware(
   allow_methods=["*"],
   allow_headers=["*"],
 )
-
-
-Express
-
-const cors = require('cors');
-app.use(cors({
-  origin: ['https://tufrontend.vercel.app', 'https://www.tudominio.com'],
-  credentials: true
-}));
-
 
 Evita * si usas cookies/credentials.
 
