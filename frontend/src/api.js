@@ -1,8 +1,9 @@
 // src/api.js
 
-const BASE_URL = "http://localhost:8000";
+//const BASE_URL = "http://localhost:8000";
 
-const API_URL = "https://test1-w6gt.onrender.com";
+//const VITE_API_URL = "https://test1-w6gt.onrender.com";// en environment variables;
+const API_URL = import.meta.env.VITE_API_URL;
 
 async function getHealth() {
   const res = await fetch(`${API_URL}/health`);
@@ -32,7 +33,7 @@ export async function getColumnsFromSheet(filePath, sheetName) {
   formData.append("file_path", filePath);
   formData.append("sheet_name", sheetName);
 
-  const res = await fetch(`${BASE_URL}/get-columns/`, {
+  const res = await fetch(`${API_URL}/get-columns/`, {
     method: "POST",
     body: formData
   });
@@ -51,7 +52,7 @@ export async function mapExcelColumns(filePath, sheetName, mapping) {
   formData.append("sheet_name", sheetName);
   formData.append("mapping", JSON.stringify(mapping));
 
-  const res = await fetch(`${BASE_URL}/map-columns/`, {
+  const res = await fetch(`${API_URL}/map-columns/`, {
     method: "POST",
     body: formData
   });
@@ -84,7 +85,7 @@ export async function generateWord(templateId, formData) {
     });
   });
 
-  const res = await fetch(`${BASE_URL}/generate`, {
+  const res = await fetch(`${API_URL}/generate`, {
     method: "POST",
     body: fd,
   });
