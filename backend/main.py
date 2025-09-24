@@ -7,7 +7,7 @@ from typing import List, Dict
 from fastapi.responses import FileResponse
 from docx import Document
 import tempfile
-from document_builder import (
+from builder.document_builder import (
     crear_doc,
     insertar_portada,
     #insertar_datos_generales,
