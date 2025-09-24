@@ -4,6 +4,12 @@ const BASE_URL = "http://localhost:8000";
 
 const API_URL = "https://test1-w6gt.onrender.com";
 
+async function getHealth() {
+  const res = await fetch(`${API_URL}/health`);
+  const data = await res.json();
+  console.log(data);
+}
+
 export async function uploadExcel(file) {
   const formData = new FormData();
   formData.append("file", file);

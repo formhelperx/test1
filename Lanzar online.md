@@ -28,47 +28,41 @@ Regístrate en https://render.com
 
 Click New → Web Service → conecta tu repo y selecciona la rama (ej. main).
 
-2. Configura build & start (ejemplos)
+## 2. Configura build & start (ejemplos)
 
 FastAPI (Python)
 
-Build command: (opcional) pip install -r requirements.txt
+* Build command: (opcional) pip install -r requirements.txt
       mejor:pip install --upgrade pip setuptools wheel && pip install -r requirements.txt
 
-Start command (muy importante usar $PORT):
+* Start command : uvicorn main:app --host 0.0.0.0 --port $PORT
 
-uvicorn main:app --host 0.0.0.0 --port $PORT
+* Root directory : backend
 
-
+// Yo no hago esto:
 Si quieres más robustez en producción: usar gunicorn -k uvicorn.workers.UvicornWorker main:app con workers.
-
 en package.json:
-
 "scripts": {
   "start": "node index.js"
 }
-
-
 y en index.js:
-
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log("Listening", port));
 
-
 Render asigna automáticamente $PORT al contenedor; no uses puerto fijo.
 
-3. Variables de entorno (secrets)
+## 3. Variables de entorno (secrets)
 
 En el panel del servicio → Environment añade:
 
 DATABASE_URL, SECRET_KEY, NODE_ENV=production, etc.
 No pongas secretos en el repo.
 
-4. Health check (opcional)
+## 4. Health check (opcional)
 
 Configura una ruta simple /health que devuelva 200 para que Render marque la app como OK.
 
-5. Deploy y logs
+## 5. Deploy y logs
 
 Pulsa Deploy.
 
@@ -92,18 +86,18 @@ app.add_middleware(
 
 Evita * si usas cookies/credentials.
 
-Paso B — Desplegar el frontend en Vercel
+### Paso B — Desplegar el frontend en Vercel
 
 Antes de desplegar en Vercel, es mejor que ya tengas la URL del backend (Render) para configurar la variable de entorno del frontend.
 
-1. Crear cuenta en Vercel y conectar repo
+##1. Crear cuenta en Vercel y conectar repo
 
 Regístrate en https://vercel.com
  → New Project → importa tu repo.
 
 Si tu monorepo tiene frontend/, elige la carpeta correcta.
 
-2. Ajustes de Build
+## 2. Ajustes de Build
 
 Framework autodetectado (Vite/React).
 
@@ -111,15 +105,11 @@ Build Command:
 
 Vite: npm run build
 
-CRA: npm run build
-
 Output Directory:
 
 Vite: dist
 
-CRA: build
-
-3. Variables de entorno (IMPORTANTÍSIMO)
+## 3. Variables de entorno (IMPORTANTÍSIMO)
 
 En Vercel → Project Settings → Environment Variables:
 
@@ -129,7 +119,7 @@ Añade para Production, Preview y Development según quieras.
 
 4. Deploy
 
-Pulsa Deploy; Vercel hará build y te dará https://miapp.vercel.app.
+Pulsa Deploy; Vercel hará build y te dará https://miapp.vercel.app.--> esto va en api.js : const API_URL = "https://test1-w6gt.onrender.com";
 
 Prueba el frontend y verifica que las llamadas van al dominio de Render (mirar tab Network).
 
