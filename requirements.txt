@@ -1,8 +1,8 @@
 pip>=25.2
-setuptools>=70
-wheel>=0.40
+setuptools>=70.0.0
+wheel>=0.43.0
 fastapi==0.116.1
-uvicorn==0.35.0
-pydantic==2.7.4
-numpy==1.26.4       # solo si realmente lo necesitas
-pandas==2.2.2       # solo si realmente lo necesitas
+uvicorn[standard]==0.35.0
+pandas==2.2.2
+docx ==0.8.11
+
