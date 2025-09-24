@@ -3,6 +3,7 @@ setuptools>=70.0.0
 wheel>=0.43.0
 fastapi==0.116.1
 uvicorn[standard]==0.35.0
-pandas==2.2.2
-docx ==0.8.11
+pandas
+docx
+
 
