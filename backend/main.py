@@ -24,6 +24,10 @@ from builder.document_builder import (
 
 app = FastAPI()
 
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 # Habilitar CORS
 app.add_middleware(
     CORSMiddleware,

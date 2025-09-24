@@ -2,6 +2,8 @@
 
 const BASE_URL = "http://localhost:8000";
 
+const API_URL = "https://test1-w6gt.onrender.com";
+
 export async function uploadExcel(file) {
   const formData = new FormData();
   formData.append("file", file);
