@@ -1,10 +1,6 @@
-// src/api.js
 
-//const BASE_URL = "http://localhost:8000";
-
-//const VITE_API_URL = "https://test1-w6gt.onrender.com";// en environment variables;
 const API_URL = import.meta.env.VITE_API_URL;
-
+console.log("URL del backend:", import.meta.env.VITE_API_URL);
 // Wrapper para fetch con manejo básico de errores
 export async function apiFetch(endpoint, options = {}) {
   try {

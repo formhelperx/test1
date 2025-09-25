@@ -217,3 +217,13 @@ fragmentos para vite.config.js proxy para desarrollo,
 y los pasos exactos click-by-click para Vercel/Render.
 
 ¿Vamos con los comandos y snippets para tu stack? 🚀
+
+
+
+
+---------
+// src/api.js
+
+//const BASE_URL = "http://localhost:8000";
+
+//const VITE_API_URL = "https://test1-w6gt.onrender.com";// en environment variables;
