@@ -12,7 +12,7 @@ export default function Home() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <button
+        {/* <button
           onClick={() => navigate("/form-template")}
           className="p-6 bg-white shadow rounded-xl hover:shadow-lg transition border border-gray-200"
         >
@@ -30,7 +30,7 @@ export default function Home() {
           <p className="text-gray-600 text-sm">
             Sube un Excel y selecciona las hojas/columnas para tu informe.
           </p>
-        </button>
+        </button> */}
 
         <button
           onClick={() => navigate("/ITEForm")}
@@ -46,7 +46,7 @@ export default function Home() {
           disabled
           className="p-6 bg-gray-200 text-gray-500 shadow rounded-xl cursor-not-allowed border border-gray-200"
         >
-          <h3 className="text-lg font-bold mb-2">➕ Otro Método</h3>
+          <h3 className="text-lg font-bold mb-2">➕ Otro Informe</h3>
           <p className="text-gray-500 text-sm">Próximamente disponible</p>
         </button>
       </div>
