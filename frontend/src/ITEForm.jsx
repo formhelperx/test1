@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 
+
 export default function ITEForm() {
   const hoy = new Date().toISOString().slice(0, 10);
+  const API_URL = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
 
     promotor: "",
@@ -191,7 +193,7 @@ export default function ITEForm() {
       });
 
       // 4️⃣ Llamada al backend
-      const res = await fetch("http://localhost:8000/generate", {
+      const res = await fetch(`${API_URL}/generate`, {
         method: "POST",
         body: fd, // importante: no poner headers, FormData lo maneja
       });
