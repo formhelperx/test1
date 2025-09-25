@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
 import FormTemplate from "./FormTemplate";
 import ExcelUploader from "./ExcelUploader";
 import ITEForm from "./ITEForm";
+import { healthCheck } from "./api";
 
 function App() {
+  useEffect(() => {
+    healthCheck()
+      .then((data) => console.log("✅ Backend conectado:", data))
+      .catch((err) => console.error("❌ Error de conexión con backend:", err));
+  }, []);
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">

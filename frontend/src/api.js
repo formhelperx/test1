@@ -5,10 +5,43 @@
 //const VITE_API_URL = "https://test1-w6gt.onrender.com";// en environment variables;
 const API_URL = import.meta.env.VITE_API_URL;
 
-async function getHealth() {
-  const res = await fetch(`${API_URL}/health`);
-  const data = await res.json();
-  console.log(data);
+// Wrapper para fetch con manejo básico de errores
+export async function apiFetch(endpoint, options = {}) {
+  try {
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+      ...options,
+    });
+
+    if (!res.ok) {
+      throw new Error(`Error ${res.status}: ${res.statusText}`);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("❌ API error:", err);
+    throw err;
+  }
+}
+
+// Ejemplo de endpoints -----------------------------
+
+export async function healthCheck() {
+  return apiFetch("/health");
+}
+
+export async function getSomething() {
+  return apiFetch("/something");
+}
+
+export async function postSomething(data) {
+  return apiFetch("/something", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
 }
 
 export async function uploadExcel(file) {
