@@ -30,8 +30,11 @@ export async function apiFetch(endpoint, options = {}) {
 // Ejemplo de endpoints -----------------------------
 
 export async function healthCheck() {
-  return apiFetch("/health");
+  const res = await fetch(`${API_URL}/health`);
+  if (!res.ok) throw new Error("Error en health check");
+  return res.json();
 }
+
 
 export async function getSomething() {
   return apiFetch("/something");
