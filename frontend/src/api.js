@@ -15,7 +15,7 @@ export async function uploadExcel(file) {
   const formData = new FormData();
   formData.append("file", file);
 
-  const res = await fetch(`${BASE_URL}/upload-excel/`, {
+  const res = await fetch(`${API_URL}/upload-excel/`, {
     method: "POST",
     body: formData
   });
