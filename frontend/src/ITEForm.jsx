@@ -346,7 +346,7 @@ export default function ITEForm() {
         Tipología de estructura:
          <select
           name="tipologiaEstructura"
-          
+          className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, tipologiaEstructura: e.target.value })}>
         
           <option value="">Selecciona...</option>
@@ -362,6 +362,7 @@ export default function ITEForm() {
         <input
           type="text"
           name="cerramientos"
+          className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, cerramientos: e.target.value })}
           placeholder="Descripción de los cerramientos"
         />
@@ -372,7 +373,7 @@ export default function ITEForm() {
         <input
           type="text"
           name="revestimientoExterior"
-          
+          className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, revestimientoExterior: e.target.value })}
           placeholder="Tipo de revestimiento exterior"
         />
@@ -382,7 +383,7 @@ export default function ITEForm() {
         Tipo de cubierta:
         <select
           name="cubiertaTipo"
-          
+          className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, cubiertaTipo: e.target.value })}
         >
           <option value="">Selecciona...</option>
@@ -397,9 +398,9 @@ export default function ITEForm() {
         Descripción de patios/interiores:
         <textarea
           name="patiosDescripcion"
+          className="border p-2 w-full"
           
-          
-          placeholder="Descripción de patios, ventilación, iluminación..."
+          placeholder="Descripción de patios, ventilación, iluminación...(opcional)"
           onChange={(e) => setFormData({ ...formData, patiosTipo: e.target.value })}
           />
         

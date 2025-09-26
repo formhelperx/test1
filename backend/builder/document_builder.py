@@ -62,9 +62,12 @@ def insertar_memoria_descriptiva(doc, data, fotoEmplazamiento):
     # 3. EMPLAZAMIENTO Y COLINDANTES
     doc.add_heading("Emplazamiento y colindantes", level=2)
     doc.add_paragraph (f"La inspección a realizar se ha llevado a cabo en un edificio residencial ubicado en {data.get('direccion','')}. ")
-    doc.add_paragraph (f"El inmueble presenta una tipología constructiva con estructura de {data.get('tipologiaEstructura', '')}, ",
-                        "cerramientos de {data.get('cerramientos','')} y revestimiento exterior de {data.get('revestimientoExterior','')}. ",
-                        "La cubierta es {data.get('cubiertaTipo','')} y dispone de {data.get('patiosDescripcion','')}")
+    doc.add_paragraph (f"El inmueble presenta una tipología constructiva con estructura de {data.get('tipologiaEstructura', '')}, cerramientos de {data.get('cerramientos','')} y revestimiento exterior de {data.get('revestimientoExterior','')}.")
+    doc.add_paragraph (f"La cubierta es {data.get('cubiertaTipo','')}.")
+    if data.get('patiosDescripcion',''):
+        doc.add_paragraph (data.get('patiosDescripcion',''))
+
+        
 
     if fotoEmplazamiento:
         p = doc.add_paragraph()

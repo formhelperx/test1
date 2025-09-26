@@ -1,6 +1,11 @@
 
-const API_URL = import.meta.env.VITE_API_URL;
+//const API_URL = import.meta.env.VITE_API_URL;
+
+const API_URL = "http://127.0.0.1:8000";
 console.log("URL del backend:", import.meta.env.VITE_API_URL);
+
+
+
 // Wrapper para fetch con manejo básico de errores
 export async function apiFetch(endpoint, options = {}) {
   try {
