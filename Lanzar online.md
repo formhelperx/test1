@@ -221,9 +221,11 @@ y los pasos exactos click-by-click para Vercel/Render.
 
 
 
----------
-// src/api.js
+🔧 Tip extra:
+Puedes crear dos archivos de configuración:
 
-//const BASE_URL = "http://localhost:8000";
+.env.local → para desarrollo local (localhost:8000)
 
-//const VITE_API_URL = "https://test1-w6gt.onrender.com";// en environment variables;
+.env.production → para Vercel (https://test1-w6gt.onrender.com)
+
+Vite usa automáticamente el correcto según el comando (npm run dev usa .env.local, npm run build usa .env.production).

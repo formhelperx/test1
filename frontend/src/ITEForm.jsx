@@ -28,7 +28,7 @@ export default function ITEForm() {
     plantas: "",
     viviendas: "",
 
-    tipologiaEstructural: "",
+    tipologiaEstructura: "",
     cerramientos: "",
     revestimientoExterior: "",
     cubiertaTipo: "",
@@ -331,6 +331,7 @@ export default function ITEForm() {
         />
 
       </div>
+      <div>
       <h3 className="font-bold">Emplazamiento y Colindantes</h3>
         <textarea
           placeholder="Emplazamiento y colindantes"
@@ -339,6 +340,71 @@ export default function ITEForm() {
           rows="5"
           onChange={(e) => setFormData({ ...formData, emplazamiento: e.target.value })}
         />
+      </div>
+      <div>
+         <label style={{ display: "block", marginBottom: "10px" }}>
+        Tipología de estructura:
+         <select
+          name="tipologiaEstructura"
+          
+          onChange={(e) => setFormData({ ...formData, tipologiaEstructura: e.target.value })}>
+        
+          <option value="">Selecciona...</option>
+          <option value="Hormigón">Hormigón</option>
+          <option value="Madera">Madera</option>
+          <option value="Metálica">Metálica</option>
+          <option value="Mixta">Mixta</option>
+        </select>
+      </label>
+
+       <label style={{ display: "block", marginBottom: "10px" }}>
+        Cerramientos (ej. ladrillo, bloque, etc.):
+        <input
+          type="text"
+          name="cerramientos"
+          onChange={(e) => setFormData({ ...formData, cerramientos: e.target.value })}
+          placeholder="Descripción de los cerramientos"
+        />
+      </label>
+
+      <label style={{ display: "block", marginBottom: "10px" }}>
+        Revestimiento exterior (ej. revoco, piedra):
+        <input
+          type="text"
+          name="revestimientoExterior"
+          
+          onChange={(e) => setFormData({ ...formData, revestimientoExterior: e.target.value })}
+          placeholder="Tipo de revestimiento exterior"
+        />
+      </label>
+
+      <label style={{ display: "block", marginBottom: "10px" }}>
+        Tipo de cubierta:
+        <select
+          name="cubiertaTipo"
+          
+          onChange={(e) => setFormData({ ...formData, cubiertaTipo: e.target.value })}
+        >
+          <option value="">Selecciona...</option>
+          <option value="Inclinada dos aguas">Inclinada a dos aguas</option>
+          <option value="Plana transitable">Plana transitable</option>
+          <option value="Plana no transitable">Plana no transitable</option>
+          <option value="Otro">Otro</option>
+        </select>
+      </label>
+
+      <label style={{ display: "block", marginBottom: "10px" }}>
+        Descripción de patios/interiores:
+        <textarea
+          name="patiosDescripcion"
+          
+          
+          placeholder="Descripción de patios, ventilación, iluminación..."
+          onChange={(e) => setFormData({ ...formData, patiosTipo: e.target.value })}
+          />
+        
+      </label> 
+    </div>
 
   
       {/* ANTECEDENTES */}
