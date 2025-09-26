@@ -89,7 +89,7 @@ def insertar_resultados(doc, data, images_map):
     doc.add_heading("Introducción", level=2)
     doc.add_paragraph(
         "La inspección comienza con la visita según horarios establecidos, "
-        "de las distintas viviendas que componen el edificio en cuestión. "
+        "de las distintas viviendas que componen el edificio en cuestión en sus {data.get('plantas','')}. "
         "Se analiza el edificio desde la calle principal y también desde la plaza."
     )
     doc.add_paragraph(

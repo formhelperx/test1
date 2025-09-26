@@ -246,6 +246,7 @@ export default function ITEForm() {
           className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, promotor: e.target.value })}
         />
+        <h2 className="font-bold">Datos Generales</h2>
         <input
           type="text"
           placeholder="Arquitecta"
@@ -258,7 +259,7 @@ export default function ITEForm() {
           className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, nColegiada: e.target.value })}
         />
-        
+      
         <h3 className="block">Datos de la oferta</h3>
         <input
           type="text"
@@ -313,10 +314,8 @@ export default function ITEForm() {
           </div>
         )}
       </div>
-
     
-      <div>
-        
+      {/* <div>
         <input
           type="text"
           placeholder="nº de plantas"
@@ -329,8 +328,8 @@ export default function ITEForm() {
           className="border p-2 w-full"
           onChange={(e) => setFormData({ ...formData, viviendas: e.target.value })}
         />
-
       </div>
+ */}
       <div>
       <h3 className="font-bold">Emplazamiento y Colindantes</h3>
         <textarea
