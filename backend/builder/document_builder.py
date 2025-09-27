@@ -121,6 +121,8 @@ def insertar_resultados(doc, data, images_map):
             row = table.add_row().cells
             row[0].text = "Grado de actuación"
             row[1].text = str(pat["grado"])
+        
+        doc.add_paragraph()
 
         # Insertar imágenes si existen
         if idx in images_map:
