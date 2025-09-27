@@ -315,7 +315,7 @@ export default function ITEForm() {
         )}
       </div>
     
-      {/* <div>
+      <div>
         <input
           type="text"
           placeholder="nº de plantas"
@@ -329,7 +329,6 @@ export default function ITEForm() {
           onChange={(e) => setFormData({ ...formData, viviendas: e.target.value })}
         />
       </div>
- */}
       <div>
       <h3 className="font-bold">Emplazamiento y Colindantes</h3>
         <textarea

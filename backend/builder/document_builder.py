@@ -87,11 +87,8 @@ def insertar_antecedentes(doc, data):
 def insertar_resultados(doc, data, images_map):
     doc.add_heading("RESULTADOS", level=1)
     doc.add_heading("Introducción", level=2)
-    doc.add_paragraph(
-        "La inspección comienza con la visita según horarios establecidos, "
-        "de las distintas viviendas que componen el edificio en cuestión en sus {data.get('plantas','')}. "
-        "Se analiza el edificio desde la calle principal y también desde la plaza."
-    )
+    doc.add_paragraph(f"La inspección comienza con la visita según horarios establecidos, de las distintas viviendas que componen el edificio en cuestión en sus {data.get('plantas','')}. ")
+    doc.add_paragraph("Se analiza el edificio desde la calle principal y también desde la plaza.")
     doc.add_paragraph(
         "A continuación, se exponen las tablas con los datos obtenidos de cada una de las zonas analizadas, "
         "y comentarios acerca de lo observado en cada uno de los elementos. "
